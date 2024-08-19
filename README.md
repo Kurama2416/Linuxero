@@ -11,3 +11,13 @@ Si queremos instalar un paquete en .deb debe usar este comando:
 
     sudo dpkg -i nombre.deb
 
+### Problema de actualización de paquetes 
+Si tenemos problemas con unos paquetes que no se actualizan con el comando `sudo apt upgrade` para ello haremos lo siguiente: 
+
+Instalaremos primero la herramienta para gestionar paquetes de forma segura, usaremos el siguiente comando:
+
+    sudo apt install aptitude 
+
+Una vez instalado, usaremos el siguiente comando para actualizar los paquetes de forma segura que nos hiciera falta:
+
+    sudo aptitude safe-upgrade
