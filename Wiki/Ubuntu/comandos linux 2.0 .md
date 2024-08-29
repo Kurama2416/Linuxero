@@ -1897,17 +1897,7 @@ reboot
   strace ls
   ```
 
----
 
-## Consejos Clave para Usar Comandos en Linux
-
-1. **Conoce tu shell:** Familiarízate con tu shell preferido.
-2. **Domina los comandos principales:** Aprende los comandos básicos.
-3. **Usa pipelines:** Combina comandos para eficiencias.
-4. **Verifica antes de sobrescribir:** Revisa antes de usar `>`.
-5. **Registra tus flujos de trabajo:** Documenta tus procedimientos.
-6. **Crea tus propias herramientas:** Usa scripts y alias para automatizar tareas.
-7. **Comienza sin sudo:** Usa una cuenta estándar para aprender.
 
 
 
