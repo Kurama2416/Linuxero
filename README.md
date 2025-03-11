@@ -73,7 +73,7 @@ Aquí encontrarás una lista de errores comunes y sus soluciones en varias distr
 | **Error: Permiso denegado** | Todas | Usar `sudo` antes del comando o cambiar permisos con `chmod` |
 | **Error: Wi-Fi no funciona** | Ubuntu, Fedora | Reiniciar `NetworkManager` con `sudo systemctl restart NetworkManager` |
 
-📌 **Para ver la lista completa, revisa [`errores_linux.md`](errores_linux.md)**
+📌 **Para ver la lista completa, revisa [`errores_linux`](Wiki/Ubuntu/errores_linux.md)**
 
 ---
 
