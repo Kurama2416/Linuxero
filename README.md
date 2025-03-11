@@ -23,10 +23,10 @@ Repositorio dedicado a recopilar comandos útiles y soluciones a problemas comun
 ## ⚙️ Instalación y Uso
 Para utilizar las soluciones de este repositorio, puedes clonar el proyecto en tu máquina local con:
 
-
+```fish
     git clone https://github.com/Kurama2416/Linuxero.git
     cd Linuxero
-
+```
 
 Luego, accede a la documentación o ejecuta los scripts según tu necesidad.
 
@@ -35,7 +35,7 @@ Luego, accede a la documentación o ejecuta los scripts según tu necesidad.
 ## 🖥️ Comandos Generales
 Lista de comandos básicos que funcionan en la mayoría de las distribuciones de Linux:
 
-```bash
+```fish
 ls        # Listar archivos y directorios
 cd        # Cambiar de directorio
 pwd       # Mostrar el directorio actual
