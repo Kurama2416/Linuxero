@@ -1,4 +1,4 @@
-# Comandos básicos de ubuntu
+# Solucion de errores y otros comandos
 *mantenedor de la guia: Kurama2416*
 
 ### Problema de la hora con windows (dualbot)
