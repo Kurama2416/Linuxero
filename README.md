@@ -47,7 +47,7 @@ mkdir     # Crear un nuevo directorio
 chmod     # Cambiar permisos de archivos
 chown     # Cambiar propietario de archivos
 ```
-📌 **Para más detalles, revisa [`comandos_linux`](Wiki/Linux_General/comandos_linux.md)**
+📌 **Para más detalles, revisa [`comandos_linux`](Wiki/Linux%20General/comandos_linux.md)**
 
 ---
 
@@ -60,7 +60,7 @@ Los comandos de instalación de paquetes varían según la distribución:
 | Instalar paquete | `sudo apt install paquete` | `sudo dnf install paquete` | `sudo pacman -S paquete` |
 | Eliminar paquete | `sudo apt remove paquete` | `sudo dnf remove paquete` | `sudo pacman -R paquete` |
 
-📌 **Para más detalles, revisa [`gestores_paquetes`](Wiki/gestores_paquetes.md)**
+📌 **Para más detalles, revisa [`gestores_paquetes`](Wiki/Linux%20General/gestores_paquetes.md)**
 
 ---
 
