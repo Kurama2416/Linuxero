@@ -47,7 +47,7 @@ mkdir     # Crear un nuevo directorio
 chmod     # Cambiar permisos de archivos
 chown     # Cambiar propietario de archivos
 ```
-📌 **Para más detalles, revisa [`comandos_linux`](Wiki/Linux_General/comandos_linux.)**
+📌 **Para más detalles, revisa [`comandos_linux`](Wiki/Linux_General/comandos_linux.md)**
 
 ---
 
