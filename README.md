@@ -105,3 +105,7 @@ Si tienes preguntas o sugerencias, puedes contactarme en mi perfil de GitHub: [K
 ---
 
 ⭐ **Si este repositorio te ha sido útil, no olvides darle una estrella!** ⭐
+
+<div style="background:#fef7e0; border-left:4px solid #fbbc04; padding:10px; border-radius:6px;">
+⚠️ <strong>Advertencia:</strong> Este cambio afecta la hora del sistema.
+</div>
