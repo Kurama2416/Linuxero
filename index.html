@@ -27,7 +27,7 @@
             height: 100vh; overflow: hidden; 
         }
         
-        /* BARRA LATERAL */
+        
         #sidebar { 
             width: 320px; height: calc(100vh - 40px); 
             background: var(--glass-bg); 
@@ -49,7 +49,7 @@
         }
         #sidebar h2:hover { color: var(--accent); }
 
-        /* BUSCADOR CON BOTÓN X */
+        
         .search-container {
             position: relative;
             width: 100%;
@@ -83,7 +83,7 @@
         }
         #clearSearch:hover { color: var(--accent); }
 
-        /* MENÚ CON ANIMACIÓN DE DESPLAZAMIENTO */
+        
         .nav-item { 
             display: block; 
             color: var(--text-muted); 
@@ -99,10 +99,10 @@
         .nav-item:hover { 
             background: rgba(249, 115, 22, 0.1); 
             color: var(--accent); 
-            padding-left: 25px; /* Efecto que pediste */
+            padding-left: 25px; 
         }
 
-        /* CONTENIDO PRINCIPAL */
+        
         #content-wrapper { 
             flex-grow: 1; height: 100vh; overflow-y: auto; 
             padding: 20px 40px 100px 10px; scroll-behavior: smooth; 
@@ -123,7 +123,7 @@
         .markdown-body table { background-color: rgba(0,0,0,0.2) !important; width: 100%; border-radius: 8px; overflow: hidden; }
         .markdown-body pre { background: var(--code-bg) !important; border: 1px solid var(--border) !important; position: relative; padding: 25px !important; border-radius: 12px !important; }
 
-        /* COPIADO Y TOOLTIP */
+       
         .copy-container {
             position: absolute;
             right: 12px;
@@ -192,7 +192,7 @@
     const contentWrapper = document.getElementById('content-wrapper');
     const mdRender = document.getElementById('md-render');
 
-    // Carga de archivos con Cache Buster para detectar cambios al instante
+    
     function loadMarkdown(url) {
         const cacheBuster = `?t=${new Date().getTime()}`;
         
@@ -273,7 +273,7 @@
 
             const feedback = document.createElement('span');
             feedback.className = "copy-feedback";
-            feedback.innerText = "Copied!";
+            feedback.innerText = "Copiado!";
 
             const btn = document.createElement('button');
             btn.className = "copy-btn";
