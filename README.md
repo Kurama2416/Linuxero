@@ -8,7 +8,7 @@ Repositorio dedicado a recopilar comandos útiles y soluciones a problemas comun
 
 ---
 
-## 📌 Índice
+## 📌 Indice
 - [Instalación y Uso](#instalación-y-uso)
 - [Comandos Generales](#comandos-generales)
 - [Gestores de Paquetes](#gestores-de-paquetes)
