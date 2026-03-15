@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linuxero Wiki - Soluciones y Comandos</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+    
+    <style>
+        :root { 
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --accent: #f97316; 
+            --text-main: #f8fafc; 
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --code-bg: #0f172a;
+        }
+
+        body { 
+            display: flex; margin: 0; 
+            background: var(--bg-gradient); 
+            background-attachment: fixed;
+            color: var(--text-main); 
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; 
+            height: 100vh; overflow: hidden; 
+        }
+        
+        /* BARRA LATERAL */
+        #sidebar { 
+            width: 320px; height: calc(100vh - 40px); 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(20px);
+            margin: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 30px 20px; box-sizing: border-box; 
+            overflow-y: auto;
+            display: flex; flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        #sidebar h2 { 
+            font-size: 1.1rem; font-weight: 800; color: #fff;
+            margin-bottom: 20px; border-left: 4px solid var(--accent);
+            padding-left: 15px; text-transform: uppercase;
+            cursor: pointer; transition: 0.3s;
+        }
+        #sidebar h2:hover { color: var(--accent); }
+
+        /* BUSCADOR CON BOTÓN X */
+        .search-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        #searchBar { 
+            width: 100%; 
+            padding: 12px 35px 12px 12px; 
+            background: rgba(0, 0, 0, 0.2); 
+            border: 1px solid var(--border); 
+            color: white; border-radius: 10px; 
+            outline: none; box-sizing: border-box;
+            transition: 0.3s;
+        }
+        #searchBar:focus { border-color: var(--accent); }
+
+        #clearSearch {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+        #clearSearch:hover { color: var(--accent); }
+
+        /* MENÚ CON ANIMACIÓN DE DESPLAZAMIENTO */
+        .nav-item { 
+            display: block; 
+            color: var(--text-muted); 
+            padding: 10px 12px; 
+            font-size: 14px; 
+            text-decoration: none; 
+            cursor: pointer; 
+            border-radius: 8px; 
+            transition: all 0.3s ease; 
+            margin-bottom: 4px;
+        }
+
+        .nav-item:hover { 
+            background: rgba(249, 115, 22, 0.1); 
+            color: var(--accent); 
+            padding-left: 25px; /* Efecto que pediste */
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        #content-wrapper { 
+            flex-grow: 1; height: 100vh; overflow-y: auto; 
+            padding: 20px 40px 100px 10px; scroll-behavior: smooth; 
+        }
+        
+        #md-render { 
+            max-width: 900px; margin: auto; 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            padding: 60px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .markdown-body { background: transparent !important; color: var(--text-main) !important; }
+        .markdown-body h1, .markdown-body h2 { color: #fff !important; border-bottom: 1px solid var(--border) !important; padding-bottom: 10px; }
+        .markdown-body table { background-color: rgba(0,0,0,0.2) !important; width: 100%; border-radius: 8px; overflow: hidden; }
+        .markdown-body pre { background: var(--code-bg) !important; border: 1px solid var(--border) !important; position: relative; padding: 25px !important; border-radius: 12px !important; }
+
+        /* COPIADO Y TOOLTIP */
+        .copy-container {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-btn { 
+            background: rgba(255, 255, 255, 0.1); 
+            color: var(--text-muted); 
+            border: 1px solid var(--border); 
+            padding: 6px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        .copy-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+        .copy-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+        .copy-feedback {
+            background: #334155;
+            color: #f8fafc;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .copy-feedback.show { opacity: 1; transform: translateX(0); }
+
+        #toTop {
+            display: none; position: fixed; bottom: 30px; right: 30px; 
+            background: var(--accent); color: white; border: none;
+            width: 45px; height: 45px; border-radius: 50%; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div id="sidebar">
+    <h2 onclick="loadMarkdown('README.md')">LINUXERO WIKI</h2>
+    <div class="search-container">
+        <input type="text" id="searchBar" placeholder="🔍 Buscar sección..." onkeyup="filterMenu()">
+        <button id="clearSearch" onclick="clearSearchField()">&times;</button>
+    </div>
+    <div id="menu-index"></div>
+</div>
+
+<div id="content-wrapper">
+    <div id="md-render" class="markdown-body">Cargando documentación...</div>
+</div>
+
+<button id="toTop" onclick="scrollToTop()">↑</button>
+
+<script>
+    const contentWrapper = document.getElementById('content-wrapper');
+    const mdRender = document.getElementById('md-render');
+
+    // Carga de archivos con Cache Buster para detectar cambios al instante
+    function loadMarkdown(url) {
+        const cacheBuster = `?t=${new Date().getTime()}`;
+        
+        fetch(url + cacheBuster)
+            .then(response => {
+                if (!response.ok) throw new Error("Archivo no encontrado");
+                return response.text();
+            })
+            .then(data => {
+                mdRender.innerHTML = marked.parse(data);
+                document.getElementById('menu-index').innerHTML = ''; 
+                generateMenu();
+                addCopyButtons();
+                interceptLinks(); 
+                clearSearchField(); 
+                contentWrapper.scrollTo({top: 0, behavior: 'smooth'});
+            })
+            .catch(err => {
+                mdRender.innerHTML = `<h1>Error</h1><p>No se pudo cargar: <b>${url}</b>.</p>`;
+            });
+    }
+
+    function generateMenu() {
+        const headings = document.querySelectorAll('#md-render h2');
+        const menu = document.getElementById('menu-index');
+        headings.forEach((heading, index) => {
+            const id = 'section-' + index;
+            heading.id = id;
+            const link = document.createElement('a');
+            link.className = 'nav-item';
+            link.innerText = heading.innerText.replace(/[^\w\s]/gi, '').trim();
+            link.onclick = (e) => {
+                e.preventDefault();
+                document.getElementById(id).scrollIntoView({behavior: "smooth"});
+            };
+            menu.appendChild(link);
+        });
+    }
+
+    function interceptLinks() {
+        const links = mdRender.querySelectorAll('a');
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.endsWith('.md') && !href.startsWith('#')) {
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    loadMarkdown(href);
+                };
+            }
+        });
+    }
+
+    function filterMenu() {
+        let input = document.getElementById('searchBar');
+        let clearBtn = document.getElementById('clearSearch');
+        let filter = input.value.toLowerCase();
+        
+        clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.style.display = item.innerText.toLowerCase().includes(filter) ? "block" : "none";
+        });
+    }
+
+    function clearSearchField() {
+        const input = document.getElementById('searchBar');
+        input.value = '';
+        filterMenu();
+        input.focus();
+    }
+
+    function addCopyButtons() {
+        document.querySelectorAll('pre').forEach(block => {
+            if (block.querySelector('.copy-container')) return; 
+
+            const container = document.createElement('div');
+            container.className = "copy-container";
+
+            const feedback = document.createElement('span');
+            feedback.className = "copy-feedback";
+            feedback.innerText = "Copied!";
+
+            const btn = document.createElement('button');
+            btn.className = "copy-btn";
+            
+            const copyIcon = `<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>`;
+            const checkIcon = `<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>`;
+
+            btn.innerHTML = copyIcon;
+
+            btn.onclick = () => {
+                const code = block.querySelector('code').innerText;
+                navigator.clipboard.writeText(code).then(() => {
+                    btn.innerHTML = checkIcon;
+                    btn.style.color = "#60a5fa"; 
+                    feedback.classList.add('show');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = copyIcon;
+                        btn.style.color = "";
+                        feedback.classList.remove('show');
+                    }, 2000);
+                });
+            };
+
+            container.appendChild(feedback);
+            container.appendChild(btn);
+            block.appendChild(container);
+        });
+    }
+
+    contentWrapper.onscroll = () => {
+        document.getElementById("toTop").style.display = contentWrapper.scrollTop > 400 ? "block" : "none";
+    };
+
+    function scrollToTop() {
+        contentWrapper.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    loadMarkdown('README.md');
+</script>
+</body>
+</html>
