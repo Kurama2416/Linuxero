@@ -18,22 +18,18 @@
             --code-bg: #0f172a;
         }
 
-        /* LAYOUT BASE: Blindaje de scroll para móvil */
-        body, html { 
-            margin: 0; padding: 0; height: 100%; width: 100%;
-            background: #0f172a; /* Color sólido de fondo preventivo */
+        
+        body { 
+            display: flex; margin: 0; 
+            background: var(--bg-gradient); 
+            background-attachment: fixed;
             color: var(--text-main); 
             font-family: 'Inter', system-ui, sans-serif; 
-            overflow: hidden; /* Evita scroll en el body */
-            position: fixed; /* Fija el body en móvil */
+            height: 100vh; width: 100vw;
+            overflow: hidden; 
+            position: fixed; 
         }
         
-        /* Fondo degradado fijo */
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-gradient); z-index: -1;
-        }
-
         #overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); z-index: 1500; backdrop-filter: blur(3px);
@@ -46,9 +42,8 @@
             border-radius: 0 50px 50px 0; cursor: pointer;
             box-shadow: 4px 0 15px rgba(0,0,0,0.3); transition: 0.3s;
         }
-        #menu-toggle.active { left: 320px; border-radius: 50px 0 0 50px; }
 
-        /* DISEÑO DE TARJETAS (Escritorio) */
+        
         #main-container {
             display: flex; height: 100vh; width: 100vw; box-sizing: border-box;
         }
@@ -80,12 +75,12 @@
         }
         .nav-item:hover { background: rgba(249, 115, 22, 0.1); padding-left: 20px; color: var(--accent); }
 
-        /* Estilos de texto preservados */
+       
         .text-white { color: #ffffff !important; font-weight: 600; }
         .text-gray { color: var(--text-muted) !important; font-weight: 400; }
 
         #content-wrapper { 
-            flex-grow: 1; height: 100vh; overflow-y: auto; /* Solo aquí hay scroll */
+            flex-grow: 1; height: 100vh; overflow-y: auto; 
             padding: 20px 40px 100px 10px; box-sizing: border-box;
         }
         
@@ -93,14 +88,14 @@
             max-width: 900px; margin: auto; 
             background: var(--glass-bg); backdrop-filter: blur(20px);
             padding: 60px; border-radius: 24px; border: 1px solid var(--border);
-            min-height: 100%; 
+            min-height: 80vh; 
         }
 
         .markdown-body { background: transparent !important; color: var(--text-main) !important; }
         .markdown-body pre { background: var(--code-bg) !important; position: relative; padding: 0 !important; border-radius: 12px !important; overflow: hidden; }
         .markdown-body pre code { display: block; padding: 25px !important; overflow-x: auto; }
 
-        /* Animación de Copiado */
+        
         .copy-container { position: sticky; right: 0; top: 0; float: right; z-index: 10; padding: 12px; display: flex; align-items: center; gap: 8px; }
         .copy-btn { background: rgba(255, 255, 255, 0.1); color: var(--text-muted); border: 1px solid var(--border); padding: 6px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; transition: 0.2s; }
         .copy-btn.success { border-color: var(--accent); color: var(--accent); background: rgba(249, 115, 22, 0.1); }
@@ -112,7 +107,7 @@
 
         #toTop { display: none; position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 2000; }
 
-        /* AJUSTES MÓVILES RESPONSIVE */
+       
         @media (max-width: 1024px) {
             #sidebar { position: fixed; left: 0; top: 0; transform: translateX(-110%); height: 100vh; margin: 0; border-radius: 0; z-index: 1600; }
             #sidebar.active { transform: translateX(0); }
@@ -147,18 +142,17 @@
     const mdRender = document.getElementById('md-render');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
-    const btnToggle = document.getElementById('menu-toggle');
 
     function toggleSidebar() { 
         const isOpen = sidebar.classList.toggle('active');
-        btnToggle.classList.toggle('active');
         overlay.classList.toggle('active');
-        btnToggle.innerHTML = isOpen ? '❮' : '❯';
+        
+        document.getElementById('menu-toggle').innerHTML = isOpen ? '❮' : '❯';
     }
 
-    // MOTOR DE NAVEGACIÓN INTELIGENTE
+   
     function loadMarkdown(url) {
-        // Soporte para espacios en nombres de carpeta/archivo
+        
         const encodedUrl = encodeURI(url);
         
         fetch(encodedUrl + `?t=${new Date().getTime()}`)
@@ -170,31 +164,28 @@
                 mdRender.innerHTML = marked.parse(data);
                 generateMenu();
                 addCopyButtons();
-                // Pasamos la URL actual para resolver rutas relativas en subcarpetas
+               
                 handleInternalLinks(url); 
-                if (window.innerWidth <= 1024 && sidebar.classList.contains('active')) toggleSidebar();
                 contentWrapper.scrollTop = 0;
             })
             .catch(err => {
-                console.error(err);
-                mdRender.innerHTML = "<h2>Error</h2><p>No se pudo cargar el documento: " + url + "</p>";
+                mdRender.innerHTML = "<h2>Error</h2><p>No se pudo cargar: " + url + "</p>";
             });
     }
 
     function handleInternalLinks(currentPath) {
-        // Detecta el directorio actual (ej: "Wiki/Linux General/")
-        const currentDir = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+        
+        const currentDir = currentPath.includes('/') ? currentPath.substring(0, currentPath.lastIndexOf('/') + 1) : '';
 
         mdRender.querySelectorAll('a').forEach(link => {
             const href = link.getAttribute('href');
             
-            // Si es un link .md y no es externo
+            
             if (href && href.endsWith('.md') && !href.startsWith('http')) {
                 link.onclick = (e) => {
                     e.preventDefault();
                     
-                    // Si el link ya tiene carpeta (ej: "Wiki/..."), lo usamos directo.
-                    // Si no, le pegamos el directorio actual para no perdernos.
+                    
                     const nextPath = href.includes('/') ? href : currentDir + href;
                     
                     loadMarkdown(nextPath);
@@ -213,7 +204,6 @@
             const link = document.createElement('a');
             link.className = 'nav-item';
             
-            // Preservar texto blanco/gris en menú
             const hasCode = heading.querySelector('code');
             if (hasCode) {
                 const codeText = hasCode.innerText;
@@ -223,7 +213,13 @@
                 link.innerHTML = `<span class="text-white">${heading.innerText}</span>`;
             }
 
-            link.onclick = () => contentWrapper.scrollTo({ top: heading.offsetTop - 20, behavior: "smooth" });
+            link.onclick = () => {
+                contentWrapper.scrollTo({ top: heading.offsetTop - 20, behavior: "smooth" });
+                // CIERRE AUTOMÁTICO EN MÓVIL
+                if (window.innerWidth <= 1024 && sidebar.classList.contains('active')) {
+                    toggleSidebar();
+                }
+            };
             menu.appendChild(link);
         });
     }
@@ -263,7 +259,6 @@
     function scrollToTop() { contentWrapper.scrollTo({top: 0, behavior: 'smooth'}); }
     contentWrapper.onscroll = () => { document.getElementById("toTop").style.display = contentWrapper.scrollTop > 400 ? "block" : "none"; };
     
-    // Carga inicial
     loadMarkdown('README.md');
 </script>
 </body>
