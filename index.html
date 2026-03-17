@@ -6,6 +6,277 @@
     <title>Linuxero Wiki - Soluciones y Comandos</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+    <style>
+        :root { 
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --accent: #f97316; 
+            --text-main: #f8fafc; 
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --code-bg: #0f172a;
+        }
+        body { 
+            display: flex; margin: 0; 
+            background: var(--bg-gradient); 
+            background-attachment: fixed;
+            color: var(--text-main); 
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; 
+            height: 100vh; width: 100vw;
+            overflow: hidden; position: fixed;
+        }
+        #menu-toggle {
+            display: none; position: fixed; top: 20px; left: 0; 
+            z-index: 2000; background: var(--accent); color: white;
+            border: none; padding: 12px 8px 12px 15px; 
+            border-radius: 0 50px 50px 0; cursor: pointer;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        #menu-toggle.active { left: 320px; border-radius: 50px 0 0 50px; padding: 12px 15px 12px 8px; }
+        #sidebar { 
+            width: 320px; height: calc(100vh - 40px); 
+            background: var(--glass-bg); backdrop-filter: blur(20px);
+            margin: 20px; border-radius: 20px; border: 1px solid var(--border);
+            padding: 30px 20px; box-sizing: border-box; 
+            overflow-y: auto; display: flex; flex-direction: column;
+            flex-shrink: 0; transition: transform 0.3s ease;
+        }
+        #sidebar h2 { 
+            font-size: 1.1rem; font-weight: 800; color: #fff;
+            margin-bottom: 20px; border-left: 4px solid var(--accent);
+            padding-left: 15px; text-transform: uppercase; cursor: pointer;
+        }
+        .search-container { position: relative; width: 100%; margin-bottom: 25px; }
+        #searchBar { 
+            width: 100%; padding: 12px 35px 12px 12px; 
+            background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border); 
+            color: white; border-radius: 10px; outline: none; box-sizing: border-box;
+        }
+        #clearSearch {
+            display: none; position: absolute; right: 10px; top: 50%;
+            transform: translateY(-50%); background: none; border: none;
+            color: var(--text-muted); font-size: 20px; cursor: pointer;
+        }
+        .nav-item { 
+            display: block; color: var(--text-muted); padding: 10px 12px; 
+            font-size: 14px; text-decoration: none; cursor: pointer; 
+            border-radius: 8px; transition: all 0.3s ease; margin-bottom: 4px;
+        }
+        .text-white { color: #ffffff !important; font-weight: 600; }
+        .text-gray { color: var(--text-muted) !important; font-weight: 400; }
+        .nav-item:hover { background: rgba(249, 115, 22, 0.1); padding-left: 20px; }
+        .nav-item:hover * { color: var(--accent) !important; }
+        #content-wrapper { 
+            flex-grow: 1; height: 100vh; overflow-y: auto; 
+            padding: 20px 40px 100px 10px; position: relative;
+        }
+        #md-render { 
+            max-width: 900px; margin: auto; 
+            background: var(--glass-bg); backdrop-filter: blur(20px);
+            padding: 60px; border-radius: 24px; border: 1px solid var(--border);
+            min-height: 100%; 
+        }
+        .markdown-body { background: transparent !important; color: var(--text-main) !important; }
+        .markdown-body pre { 
+            background: var(--code-bg) !important; 
+            position: relative; 
+            padding: 0 !important; 
+            border-radius: 12px !important; 
+            overflow: hidden;
+        }
+        .markdown-body pre code { 
+            display: block; 
+            padding: 25px !important; 
+            overflow-x: auto; 
+        }
+        .copy-container { 
+            position: sticky; 
+            right: 0; top: 0; 
+            float: right; 
+            z-index: 10;
+            padding: 12px;
+            background: linear-gradient(to left, var(--code-bg) 70%, transparent);
+        }
+        .copy-btn { 
+            background: rgba(255, 255, 255, 0.1); color: var(--text-muted); 
+            border: 1px solid var(--border); padding: 6px; border-radius: 6px; 
+            cursor: pointer; display: flex; align-items: center; transition: all 0.2s;
+        }
+        .copy-btn svg { width: 16px; height: 16px; fill: currentColor; }
+        .copy-btn.success { border-color: var(--accent); color: var(--accent); background: rgba(249, 115, 22, 0.1); }
+        .copy-btn.success .icon-copy { display: none; }
+        .copy-btn .icon-check { display: none; opacity: 0; transform: scale(0.5); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .copy-btn.success .icon-check { display: block; opacity: 1; transform: scale(1); }
+        .copy-feedback { color: var(--accent); font-size: 12px; font-weight: 500; opacity: 0; transform: translateX(10px); transition: 0.3s; }
+        .copy-feedback.show { opacity: 1; transform: translateX(0); }
+        #toTop {
+            display: none; position: fixed; bottom: 30px; right: 30px; 
+            background: var(--accent); color: white; border: none;
+            width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 2000;
+        }
+        @media (max-width: 1024px) {
+            #sidebar { position: fixed; left: 0; top: 0; transform: translateX(-110%); z-index: 1500; height: 100vh; margin: 0; border-radius: 0; }
+            #sidebar.active { transform: translateX(0); }
+            #menu-toggle { display: block; }
+            #content-wrapper { padding: 80px 20px; }
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+    </style>
+</head>
+<body>
+<button id="menu-toggle" onclick="toggleSidebar()">❯</button>
+<div id="sidebar">
+    <h2 onclick="loadMarkdown('README.md')">LINUXERO WIKI</h2>
+    <div class="search-container">
+        <input type="text" id="searchBar" placeholder="🔍 Buscar..." onkeyup="filterMenu()">
+        <button id="clearSearch" onclick="clearSearchField()">&times;</button>
+    </div>
+    <div id="menu-index"></div>
+</div>
+<div id="content-wrapper">
+    <div id="md-render" class="markdown-body">Cargando documentación...</div>
+</div>
+<button id="toTop" onclick="scrollToTop()">↑</button>
+<script>
+    const contentWrapper = document.getElementById('content-wrapper');
+    const mdRender = document.getElementById('md-render');
+    const sidebar = document.getElementById('sidebar');
+
+    function toggleSidebar() { 
+        sidebar.classList.toggle('active');
+        const btn = document.getElementById('menu-toggle');
+        btn.classList.toggle('active');
+        btn.innerHTML = sidebar.classList.contains('active') ? '❮' : '❯';
+    }
+
+    function loadMarkdown(url) {
+        fetch(url + `?t=${new Date().getTime()}`)
+            .then(res => {
+                if (!res.ok) throw new Error("No se pudo cargar el archivo");
+                return res.text();
+            })
+            .then(data => {
+                mdRender.innerHTML = marked.parse(data);
+                generateMenu();
+                addCopyButtons();
+                handleInternalLinks();
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.remove('active');
+                    document.getElementById('menu-toggle').classList.remove('active');
+                    document.getElementById('menu-toggle').innerHTML = '❯';
+                }
+                contentWrapper.scrollTop = 0;
+            })
+            .catch(err => {
+                console.error(err);
+                mdRender.innerHTML = "<h2>Error</h2><p>No se pudo cargar el documento: " + url + "</p>";
+            });
+    }
+
+    function handleInternalLinks() {
+        const links = mdRender.querySelectorAll('a');
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.endsWith('.md')) {
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    loadMarkdown(href);
+                };
+            }
+        });
+    }
+
+    function generateMenu() {
+        const headings = document.querySelectorAll('#md-render h2');
+        const menu = document.getElementById('menu-index');
+        menu.innerHTML = '';
+        headings.forEach((heading, index) => {
+            const id = 'section-' + index;
+            heading.id = id;
+            const link = document.createElement('a');
+            link.className = 'nav-item';
+            const hasCode = heading.querySelector('code');
+            if (hasCode) {
+                const codeText = hasCode.innerText;
+                const parts = heading.innerText.split(codeText);
+                link.innerHTML = `<span class="text-white">${parts[0]}${codeText}</span><span class="text-gray">${parts[1] || ''}</span>`;
+            } else {
+                link.innerHTML = `<span class="text-white">${heading.innerText}</span>`;
+            }
+            link.onclick = (e) => {
+                e.preventDefault();
+                const target = document.getElementById(id);
+                const offset = target.offsetTop - 20;
+                contentWrapper.scrollTo({ top: offset, behavior: "smooth" });
+                if (window.innerWidth <= 1024) toggleSidebar();
+            };
+            menu.appendChild(link);
+        });
+    }
+
+    function addCopyButtons() {
+        document.querySelectorAll('pre').forEach(block => {
+            if (block.querySelector('.copy-container')) return;
+            const container = document.createElement('div');
+            container.className = "copy-container";
+            const feedback = document.createElement('span');
+            feedback.className = "copy-feedback";
+            feedback.innerText = "¡Copiado!"; 
+            const btn = document.createElement('button');
+            btn.className = "copy-btn";
+            btn.innerHTML = `<svg class="icon-copy" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>` + 
+                            `<svg class="icon-check" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>`;
+            btn.onclick = () => {
+                let code = block.querySelector('code').innerText;
+                const cleanCode = code.split('\n')
+                                      .map(line => line.split('#')[0].trim())
+                                      .filter(line => line !== "")
+                                      .join('\n');
+                navigator.clipboard.writeText(cleanCode).then(() => {
+                    btn.classList.add('success');
+                    feedback.classList.add('show');
+                    setTimeout(() => {
+                        btn.classList.remove('success');
+                        feedback.classList.remove('show');
+                    }, 2000);
+                });
+            };
+            container.appendChild(feedback);
+            container.appendChild(btn);
+            block.insertBefore(container, block.firstChild);
+        });
+    }
+
+    function filterMenu() {
+        let input = document.getElementById('searchBar');
+        let filter = input.value.toLowerCase();
+        document.getElementById('clearSearch').style.display = filter.length > 0 ? 'block' : 'none';
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.style.display = item.innerText.toLowerCase().includes(filter) ? "block" : "none";
+        });
+    }
+
+    function clearSearchField() {
+        document.getElementById('searchBar').value = '';
+        filterMenu();
+    }
+
+    function scrollToTop() { contentWrapper.scrollTo({top: 0, behavior: 'smooth'}); }
+    contentWrapper.onscroll = () => { document.getElementById("toTop").style.display = contentWrapper.scrollTop > 400 ? "block" : "none"; };
+
+    loadMarkdown('README.md');
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linuxero Wiki - Soluciones y Comandos</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
     
     <style>
         :root { 
