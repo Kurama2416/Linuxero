@@ -27,7 +27,6 @@
             height: 100vh; overflow: hidden; 
         }
         
-        
         #sidebar { 
             width: 320px; height: calc(100vh - 40px); 
             background: var(--glass-bg); 
@@ -39,6 +38,8 @@
             overflow-y: auto;
             display: flex; flex-direction: column;
             flex-shrink: 0;
+            transition: transform 0.3s ease, left 0.3s ease;
+            z-index: 1001;
         }
 
         #sidebar h2 { 
@@ -49,7 +50,6 @@
         }
         #sidebar h2:hover { color: var(--accent); }
 
-        
         .search-container {
             position: relative;
             width: 100%;
@@ -81,9 +81,7 @@
             padding: 0;
             line-height: 1;
         }
-        #clearSearch:hover { color: var(--accent); }
 
-        
         .nav-item { 
             display: block; 
             color: var(--text-muted); 
@@ -102,7 +100,6 @@
             padding-left: 25px; 
         }
 
-        
         #content-wrapper { 
             flex-grow: 1; height: 100vh; overflow-y: auto; 
             padding: 20px 40px 100px 10px; scroll-behavior: smooth; 
@@ -118,47 +115,39 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
         }
 
+        /* Botón hamburguesa (Solo móvil) */
+        #mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1002;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Capa oscura de fondo al abrir menú */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+        }
+
         .markdown-body { background: transparent !important; color: var(--text-main) !important; }
         .markdown-body h1, .markdown-body h2 { color: #fff !important; border-bottom: 1px solid var(--border) !important; padding-bottom: 10px; }
-        .markdown-body table { background-color: rgba(0,0,0,0.2) !important; width: 100%; border-radius: 8px; overflow: hidden; }
+        .markdown-body table { background-color: rgba(0,0,0,0.2) !important; width: 100%; border-radius: 8px; overflow-x: auto; display: block; }
         .markdown-body pre { background: var(--code-bg) !important; border: 1px solid var(--border) !important; position: relative; padding: 25px !important; border-radius: 12px !important; }
 
-       
-        .copy-container {
-            position: absolute;
-            right: 12px;
-            top: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .copy-btn { 
-            background: rgba(255, 255, 255, 0.1); 
-            color: var(--text-muted); 
-            border: 1px solid var(--border); 
-            padding: 6px; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-        }
-        .copy-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+        .copy-container { position: absolute; right: 12px; top: 12px; display: flex; align-items: center; gap: 8px; }
+        .copy-btn { background: rgba(255, 255, 255, 0.1); color: var(--text-muted); border: 1px solid var(--border); padding: 6px; border-radius: 6px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
         .copy-btn svg { width: 16px; height: 16px; fill: currentColor; }
-
-        .copy-feedback {
-            background: #334155;
-            color: #f8fafc;
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            opacity: 0;
-            transform: translateX(10px);
-            transition: all 0.3s ease;
-            pointer-events: none;
-        }
-        .copy-feedback.show { opacity: 1; transform: translateX(0); }
 
         #toTop {
             display: none; position: fixed; bottom: 30px; right: 30px; 
@@ -167,11 +156,30 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            #mobile-toggle { display: block; }
+            #sidebar {
+                position: fixed;
+                left: -350px; /* Escondido por defecto */
+                margin: 0;
+                height: 100vh;
+                border-radius: 0;
+            }
+            #sidebar.open { left: 0; }
+            #overlay.show { display: block; }
+            #content-wrapper { padding: 10px; padding-top: 70px; }
+            #md-render { padding: 30px 20px; }
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
 <body>
+
+<button id="mobile-toggle" onclick="toggleSidebar()">☰ Menú</button>
+<div id="overlay" onclick="toggleSidebar()"></div>
 
 <div id="sidebar">
     <h2 onclick="loadMarkdown('README.md')">LINUXERO WIKI</h2>
@@ -191,11 +199,16 @@
 <script>
     const contentWrapper = document.getElementById('content-wrapper');
     const mdRender = document.getElementById('md-render');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
 
-    
+    function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+    }
+
     function loadMarkdown(url) {
         const cacheBuster = `?t=${new Date().getTime()}`;
-        
         fetch(url + cacheBuster)
             .then(response => {
                 if (!response.ok) throw new Error("Archivo no encontrado");
@@ -209,6 +222,7 @@
                 interceptLinks(); 
                 clearSearchField(); 
                 contentWrapper.scrollTo({top: 0, behavior: 'smooth'});
+                if(sidebar.classList.contains('open')) toggleSidebar();
             })
             .catch(err => {
                 mdRender.innerHTML = `<h1>Error</h1><p>No se pudo cargar: <b>${url}</b>.</p>`;
@@ -227,6 +241,7 @@
             link.onclick = (e) => {
                 e.preventDefault();
                 document.getElementById(id).scrollIntoView({behavior: "smooth"});
+                if(sidebar.classList.contains('open')) toggleSidebar();
             };
             menu.appendChild(link);
         });
@@ -249,9 +264,7 @@
         let input = document.getElementById('searchBar');
         let clearBtn = document.getElementById('clearSearch');
         let filter = input.value.toLowerCase();
-        
         clearBtn.style.display = filter.length > 0 ? 'block' : 'none';
-
         document.querySelectorAll('.nav-item').forEach(item => {
             item.style.display = item.innerText.toLowerCase().includes(filter) ? "block" : "none";
         });
@@ -267,38 +280,15 @@
     function addCopyButtons() {
         document.querySelectorAll('pre').forEach(block => {
             if (block.querySelector('.copy-container')) return; 
-
             const container = document.createElement('div');
             container.className = "copy-container";
-
-            const feedback = document.createElement('span');
-            feedback.className = "copy-feedback";
-            feedback.innerText = "Copiado!";
-
             const btn = document.createElement('button');
             btn.className = "copy-btn";
-            
-            const copyIcon = `<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>`;
-            const checkIcon = `<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>`;
-
-            btn.innerHTML = copyIcon;
-
+            btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>`;
             btn.onclick = () => {
                 const code = block.querySelector('code').innerText;
-                navigator.clipboard.writeText(code).then(() => {
-                    btn.innerHTML = checkIcon;
-                    btn.style.color = "#60a5fa"; 
-                    feedback.classList.add('show');
-                    
-                    setTimeout(() => {
-                        btn.innerHTML = copyIcon;
-                        btn.style.color = "";
-                        feedback.classList.remove('show');
-                    }, 2000);
-                });
+                navigator.clipboard.writeText(code);
             };
-
-            container.appendChild(feedback);
             container.appendChild(btn);
             block.appendChild(container);
         });
