@@ -160,7 +160,7 @@
                 mdRender.innerHTML = marked.parse(data);
                 generateMenu();
                 addCopyButtons();
-                handleInternalLinks(); // Intercepta los links del README
+                handleInternalLinks(); 
                 if (window.innerWidth <= 1024) sidebar.classList.remove('active');
                 contentWrapper.scrollTop = 0;
             })
