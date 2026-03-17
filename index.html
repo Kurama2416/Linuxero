@@ -3,6 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linuxero Wiki</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+    
+    <style>
+        :root { 
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --accent: #f97316; 
+            --text-main: #f8fafc;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+      
+        body, html { 
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            background: #0f172a; overflow: hidden; position: fixed;
+            font-family: 'Inter', sans-serif; color: var(--text-main);
+        }
+        
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-gradient); z-index: -1;
+        }
+
+        #main-container { display: flex; height: 100vh; width: 100vw; }
+
+       
+        #sidebar { 
+            width: 300px; background: var(--glass-bg); backdrop-filter: blur(20px);
+            margin: 20px; border-radius: 20px; border: 1px solid var(--border);
+            padding: 25px; overflow-y: auto; transition: 0.3s; flex-shrink: 0;
+        }
+
+        
+        #content-wrapper { 
+            flex-grow: 1; height: 100vh; overflow-y: auto; 
+            padding: 20px 40px; box-sizing: border-box;
+        }
+        
+        #md-render { 
+            max-width: 900px; margin: auto; background: var(--glass-bg); 
+            backdrop-filter: blur(20px); padding: 50px; border-radius: 24px;
+            border: 1px solid var(--border); min-height: 80vh;
+        }
+
+        /* BOTÓN MENÚ MÓVIL */
+        #menu-toggle {
+            display: none; position: fixed; top: 20px; left: 0; z-index: 2000;
+            background: var(--accent); color: white; border: none; padding: 12px 15px;
+            border-radius: 0 50px 50px 0; cursor: pointer;
+        }
+
+        #overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1500;
+        }
+
+        @media (max-width: 1024px) {
+            #sidebar { position: fixed; left: -350px; height: 100vh; margin: 0; z-index: 1600; border-radius: 0; }
+            #sidebar.active { left: 0; }
+            #menu-toggle { display: block; }
+            #overlay.active { display: block; }
+            #content-wrapper { padding: 80px 15px; }
+            #md-render { padding: 25px; }
+        }
+
+        .nav-item { display: block; color: #94a3b8; padding: 8px; text-decoration: none; cursor: pointer; border-radius: 8px; margin-bottom: 5px; }
+        .nav-item:hover { color: var(--accent); background: rgba(249, 115, 22, 0.1); }
+    </style>
+</head>
+<body>
+
+<div id="overlay" onclick="toggleSidebar()"></div>
+<button id="menu-toggle" onclick="toggleSidebar()">❯ Menú</button>
+
+<div id="main-container">
+    <div id="sidebar">
+        <h2 style="color:white; cursor:pointer" onclick="loadMarkdown('README.md')">LINUXERO WIKI</h2>
+        <div id="menu-index"></div>
+    </div>
+    <div id="content-wrapper">
+        <div id="md-render" class="markdown-body">Cargando documentación...</div>
+    </div>
+</div>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const mdRender = document.getElementById('md-render');
+    const contentWrapper = document.getElementById('content-wrapper');
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        document.getElementById('menu-toggle').innerText = sidebar.classList.contains('active') ? '❮ Cerrar' : '❯ Menú';
+    }
+
+    
+    function loadMarkdown(url) {
+       
+        const targetUrl = url.startsWith('/') ? url.substring(1) : url;
+
+        fetch(targetUrl)
+            .then(res => {
+                if (!res.ok) throw new Error("Error " + res.status);
+                return res.text();
+            })
+            .then(data => {
+                mdRender.innerHTML = marked.parse(data);
+                generateMenu();
+                handleInternalLinks(targetUrl);
+                contentWrapper.scrollTop = 0;
+            })
+            .catch(err => {
+                mdRender.innerHTML = `<h2>Error</h2><p>No se pudo cargar: ${targetUrl}. Revisa que la ruta en el README sea correcta.</p>`;
+            });
+    }
+
+    
+    function handleInternalLinks(currentPath) {
+        const currentDir = currentPath.includes('/') ? currentPath.substring(0, currentPath.lastIndexOf('/') + 1) : '';
+
+        mdRender.querySelectorAll('a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.endsWith('.md') && !href.startsWith('http')) {
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    
+                    const finalPath = href.includes('Wiki/') ? href : currentDir + href;
+                    loadMarkdown(finalPath);
+                };
+            }
+        });
+    }
+
+    function generateMenu() {
+        const menu = document.getElementById('menu-index');
+        menu.innerHTML = '';
+        document.querySelectorAll('#md-render h2').forEach((h2, i) => {
+            h2.id = 'sec-' + i;
+            const a = document.createElement('a');
+            a.className = 'nav-item';
+            a.innerHTML = `<span style="color:white">${h2.innerText}</span>`;
+            a.onclick = () => {
+                contentWrapper.scrollTo({ top: h2.offsetTop - 20, behavior: 'smooth' });
+               
+                if (window.innerWidth <= 1024) toggleSidebar();
+            };
+            menu.appendChild(a);
+        });
+    }
+
+    loadMarkdown('README.md');
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linuxero Wiki - Soluciones y Comandos</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
