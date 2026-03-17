@@ -152,14 +152,35 @@
 
     function loadMarkdown(url) {
         fetch(url + `?t=${new Date().getTime()}`)
-            .then(res => res.text())
+            .then(res => {
+                if (!res.ok) throw new Error("No se pudo cargar el archivo");
+                return res.text();
+            })
             .then(data => {
                 mdRender.innerHTML = marked.parse(data);
                 generateMenu();
                 addCopyButtons();
+                handleInternalLinks(); // Intercepta los links del README
                 if (window.innerWidth <= 1024) sidebar.classList.remove('active');
                 contentWrapper.scrollTop = 0;
+            })
+            .catch(err => {
+                console.error(err);
+                mdRender.innerHTML = "<h2>Error</h2><p>No se pudo cargar el documento: " + url + "</p>";
             });
+    }
+
+    function handleInternalLinks() {
+        const links = mdRender.querySelectorAll('a');
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.endsWith('.md')) {
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    loadMarkdown(href); 
+                };
+            }
+        });
     }
 
     function generateMenu() {
@@ -213,7 +234,6 @@
             
             btn.onclick = () => {
                 let code = block.querySelector('code').innerText;
-                
                 const cleanCode = code.split('\n')
                                       .map(line => line.split('#')[0].trim())
                                       .filter(line => line !== "")
