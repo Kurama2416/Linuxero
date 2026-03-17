@@ -12,13 +12,13 @@
             --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             --glass-bg: rgba(30, 41, 59, 0.7);
             --accent: #f97316; 
-            --text-main: #f8fafc;
+            --text-main: #f8fafc; 
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
             --code-bg: #0f172a;
         }
 
-        
+       
         body, html { 
             margin: 0; padding: 0; height: 100%; width: 100%;
             background: #0f172a; overflow: hidden; position: fixed;
@@ -30,14 +30,9 @@
             background: var(--bg-gradient); z-index: -1;
         }
 
-       
-        #main-container { 
-            display: flex; 
-            height: 100vh; 
-            width: 100vw; 
-            overflow: hidden; 
-        }
+        #main-container { display: flex; height: 100vh; width: 100vw; }
 
+       
         #sidebar { 
             width: 320px; background: var(--glass-bg); backdrop-filter: blur(20px);
             margin: 20px; border-radius: 20px; border: 1px solid var(--border);
@@ -45,9 +40,10 @@
             display: flex; flex-direction: column;
         }
 
+       
         #content-wrapper { 
             flex-grow: 1; height: 100vh; overflow-y: auto; 
-            padding: 20px 40px 100px 10px; box-sizing: border-box;
+            padding: 20px 40px; box-sizing: border-box;
             scroll-behavior: smooth;
         }
         
@@ -57,26 +53,34 @@
             border: 1px solid var(--border); min-height: 80vh;
         }
 
-      
+        
+        .markdown-body { color: var(--text-main) !important; font-size: 16px; line-height: 1.6; }
+        .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #ffffff !important; font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-top: 24px; }
+        .markdown-body a { color: var(--accent) !important; text-decoration: none; }
+        .markdown-body a:hover { text-decoration: underline; }
+        .markdown-body code { background-color: rgba(249, 115, 22, 0.1) !important; color: #ffab70 !important; padding: 3px 6px; border-radius: 6px; font-size: 85%; }
+
+       
         .markdown-body pre { background: var(--code-bg) !important; position: relative; padding: 0 !important; border-radius: 12px !important; overflow: hidden; }
-        .markdown-body pre code { display: block; padding: 25px !important; overflow-x: auto; }
+        .markdown-body pre code { display: block; padding: 25px !important; overflow-x: auto; color: #e2e8f0 !important; background: transparent !important;}
         
         .copy-container { position: absolute; right: 10px; top: 10px; z-index: 10; display: flex; align-items: center; gap: 8px; }
-        .copy-btn { background: rgba(255, 255, 255, 0.1); color: var(--text-muted); border: 1px solid var(--border); padding: 6px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .copy-btn { background: rgba(255, 255, 255, 0.1); color: var(--text-muted); border: 1px solid var(--border); padding: 6px 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 14px; display: flex; align-items: center; gap: 4px; }
         .copy-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
         .copy-btn.success { border-color: var(--accent); color: var(--accent); }
         .copy-feedback { color: var(--accent); font-size: 12px; opacity: 0; transition: 0.3s; }
         .copy-feedback.show { opacity: 1; }
 
-     
+        
         #toTop { 
             display: none; position: fixed; bottom: 30px; right: 30px; 
             background: var(--accent); color: white; border: none; 
             width: 50px; height: 50px; border-radius: 50%; cursor: pointer; 
             z-index: 2000; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 20px; font-weight: bold;
         }
 
-     
+        
         #menu-toggle {
             display: none; position: fixed; top: 20px; left: 0; z-index: 2100;
             background: var(--accent); color: white; border: none; padding: 12px 18px;
@@ -102,7 +106,15 @@
             #md-render { padding: 35px 20px; border-radius: 15px; }
         }
 
-        .nav-item { display: block; color: var(--text-muted); padding: 12px; text-decoration: none; cursor: pointer; border-radius: 10px; margin-bottom: 5px; transition: 0.3s; }
+        
+        .search-container { position: relative; width: 100%; margin-bottom: 25px; }
+        #searchBar { 
+            width: 100%; padding: 12px 12px 12px 40px; background: rgba(0, 0, 0, 0.2); 
+            border: 1px solid var(--border); color: white; border-radius: 10px; outline: none;
+        }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+        .nav-item { display: block; color: var(--text-muted); padding: 12px; text-decoration: none; cursor: pointer; border-radius: 10px; margin-bottom: 5px; transition: 0.3s; font-size: 14px;}
         .nav-item:hover { color: var(--accent); background: rgba(249, 115, 22, 0.1); padding-left: 20px; }
     </style>
 </head>
@@ -113,7 +125,13 @@
 
 <div id="main-container">
     <div id="sidebar">
-        <h2 style="color:white; cursor:pointer; margin-bottom: 25px; border-left: 4px solid var(--accent); padding-left: 15px;" onclick="loadMarkdown('README.md')">LINUXERO WIKI</h2>
+        <h2 style="color:white; cursor:pointer; margin-bottom: 25px; border-left: 4px solid var(--accent); padding-left: 15px; font-weight: 800; font-size: 1.1rem; text-transform: uppercase;" onclick="loadMarkdown('README.md')">LINUXERO WIKI</h2>
+        
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchBar" placeholder="Buscar sección..." onkeyup="filterMenu()">
+        </div>
+
         <div id="menu-index"></div>
     </div>
     <div id="content-wrapper">
@@ -171,7 +189,17 @@
             h2.id = 'sec-' + i;
             const a = document.createElement('a');
             a.className = 'nav-item';
-            a.innerHTML = `<span style="color:white; font-weight:500;">${h2.innerText}</span>`;
+            
+            
+            const hasCode = h2.querySelector('code');
+            if (hasCode) {
+                const codeText = hasCode.innerText;
+                const parts = h2.innerText.split(codeText);
+                a.innerHTML = `<span style="color:white; font-weight:600;">${parts[0]}${codeText}</span><span style="color:var(--text-muted); font-weight:400;">${parts[1] || ''}</span>`;
+            } else {
+                a.innerHTML = `<span style="color:white; font-weight:600;">${h2.innerText}</span>`;
+            }
+
             a.onclick = () => {
                 contentWrapper.scrollTo({ top: h2.offsetTop - 20, behavior: 'smooth' });
                 if (window.innerWidth <= 1024) toggleSidebar();
@@ -190,17 +218,32 @@
             feedback.innerText = "¡Copiado!";
             const btn = document.createElement('button');
             btn.className = "copy-btn";
-            btn.innerHTML = '📋';
+            
+            btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path></svg> Copiar`;
             btn.onclick = () => {
-                const code = block.querySelector('code').innerText;
-                navigator.clipboard.writeText(code).then(() => {
+                
+                const rawCode = block.querySelector('code').innerText;
+                const cleanCode = rawCode.split('\n').map(line => line.split('#')[0].trim()).filter(line => line !== "").join('\n');
+
+                navigator.clipboard.writeText(cleanCode).then(() => {
                     btn.classList.add('success');
-                    feedback.classList.add('show');
-                    setTimeout(() => { btn.classList.remove('success'); feedback.classList.remove('show'); }, 2000);
+                    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg> ¡Copiado!`;
+                    setTimeout(() => { 
+                        btn.classList.remove('success'); 
+                        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path></svg> Copiar`;
+                    }, 2000);
                 });
             };
-            container.append(feedback, btn);
+            container.appendChild(btn); 
             block.prepend(container);
+        });
+    }
+
+   
+    function filterMenu() {
+        let filter = document.getElementById('searchBar').value.toLowerCase();
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.style.display = item.innerText.toLowerCase().includes(filter) ? "block" : "none";
         });
     }
 
