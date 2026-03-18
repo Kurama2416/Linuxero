@@ -2,10 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Linuxero Wiki</title>
 
-   
+    <!-- Librerías -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
@@ -31,7 +31,7 @@
             position: relative;
         }
 
-        
+        /* Sidebar */
         #sidebar {
             width: 260px;
             background: #020617;
@@ -52,7 +52,7 @@
             transform: translateX(0);
         }
 
-        
+        /* Botón hamburguesa */
         #menu-toggle {
             position: fixed;
             top: 16px;
@@ -61,33 +61,35 @@
             background: #f97316;
             border: none;
             color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: background 0.3s;
+            box-shadow: 0 4px 12px rgba(249,115,22,0.3);
+            transition: all 0.3s;
         }
 
         #menu-toggle:hover {
             background: #ea580c;
+            transform: scale(1.05);
         }
 
         #menu-toggle span {
             display: block;
-            width: 20px;
+            width: 22px;
             height: 2px;
             background: white;
-            margin: 2px 0;
+            margin: 3px 0;
             transition: 0.3s;
+            border-radius: 2px;
         }
 
         #menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+            transform: rotate(45deg) translate(6px, 6px);
         }
 
         #menu-toggle.active span:nth-child(2) {
@@ -95,10 +97,10 @@
         }
 
         #menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+            transform: rotate(-45deg) translate(6px, -6px);
         }
 
-        
+        /* Overlay para cerrar menú en móvil */
         #sidebar-overlay {
             display: none;
             position: fixed;
@@ -106,14 +108,16 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
             z-index: 999;
+            backdrop-filter: blur(3px);
         }
 
         #sidebar-overlay.active {
             display: block;
         }
 
+        /* Contenido principal */
         #content {
             flex: 1;
             overflow-y: auto;
@@ -123,10 +127,10 @@
             background: #0f172a;
         }
 
-        
+        /* Ajuste para pantallas más grandes */
         @media (min-width: 1024px) {
             #sidebar {
-                width: 260px;
+                width: 280px;
                 transform: translateX(0);
                 position: relative;
             }
@@ -145,7 +149,156 @@
             }
         }
 
-        
+        /* ===== MEJORAS PARA MÓVIL ===== */
+        @media (max-width: 768px) {
+            /* Contenido principal con menos padding */
+            #content {
+                padding: 16px 12px !important;
+            }
+            
+            /* Contenedor del README más compacto */
+            #md {
+                padding: 20px 16px !important;
+                max-width: 100%;
+                border-radius: 12px;
+            }
+            
+            /* Títulos más pequeños en móvil */
+            .markdown-body h1 {
+                font-size: 1.8em !important;
+                margin-top: 0 !important;
+                padding-bottom: 8px !important;
+            }
+            
+            .markdown-body h2 {
+                font-size: 1.4em !important;
+                margin-top: 24px !important;
+                margin-bottom: 12px !important;
+            }
+            
+            .markdown-body h3 {
+                font-size: 1.2em !important;
+                margin-top: 20px !important;
+            }
+            
+            /* Texto más legible */
+            .markdown-body p, 
+            .markdown-body li {
+                font-size: 15px !important;
+                line-height: 1.6 !important;
+            }
+            
+            /* Tablas con scroll horizontal en móvil */
+            .markdown-body table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                font-size: 14px;
+            }
+            
+            /* Bloques de código más compactos */
+            pre {
+                padding: 12px !important;
+                font-size: 13px !important;
+            }
+            
+            pre code {
+                font-size: 13px !important;
+            }
+            
+            /* Botón de copiar más pequeño pero visible */
+            .copy-btn {
+                padding: 6px 10px !important;
+                font-size: 11px !important;
+                min-width: 70px !important;
+                top: 6px !important;
+                right: 6px !important;
+            }
+            
+            /* Sidebar más compacto en móvil */
+            #sidebar {
+                width: 260px;
+                padding: 16px 12px;
+            }
+            
+            #sidebar h3 {
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+            
+            .nav-item {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+            
+            /* Barra de búsqueda más pequeña */
+            .search-container {
+                margin: 12px 0 16px 0;
+            }
+            
+            #search {
+                padding: 8px 32px 8px 12px;
+                font-size: 13px;
+            }
+            
+            /* Mejorar espaciado en listas */
+            .markdown-body ul, 
+            .markdown-body ol {
+                padding-left: 20px !important;
+            }
+            
+            .markdown-body li {
+                margin: 8px 0 !important;
+            }
+            
+            /* Citas más compactas */
+            .markdown-body blockquote {
+                padding: 10px 16px !important;
+                margin: 16px 0 !important;
+            }
+            
+            /* Código inline más legible */
+            .markdown-body code:not(pre code) {
+                font-size: 13px !important;
+                padding: 2px 5px !important;
+            }
+            
+            /* Imágenes responsive */
+            .markdown-body img {
+                max-width: 100%;
+                height: auto;
+            }
+            
+            /* Botón back to top más pequeño */
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 16px;
+                right: 16px;
+                font-size: 18px;
+            }
+        }
+
+        /* Ajustes para tablets */
+        @media (min-width: 769px) and (max-width: 1023px) {
+            #content {
+                padding: 32px 24px !important;
+            }
+            
+            #md {
+                padding: 32px 28px !important;
+            }
+            
+            .markdown-body h1 {
+                font-size: 2em !important;
+            }
+            
+            .markdown-body h2 {
+                font-size: 1.6em !important;
+            }
+        }
+
+        /* Contenedor del contenido */
         #md {
             max-width: 1100px;
             margin: 0 auto;
@@ -156,7 +309,7 @@
             border: 1px solid #334155;
         }
 
-      
+        /* BÚSQUEDA */
         .search-container {
             position: relative;
             margin: 20px 0 24px 0;
@@ -209,7 +362,7 @@
             display: block;
         }
 
-        
+        /* Título en sidebar */
         #sidebar h3 {
             color: #f97316;
             font-size: 22px;
@@ -228,7 +381,7 @@
             font-size: 20px;
         }
 
-        
+        /* Menú de navegación */
         .nav-item {
             display: block;
             padding: 8px 12px;
@@ -257,7 +410,7 @@
             border-left-color: #f97316;
         }
 
-       
+        /* Loading spinner */
         .loading {
             text-align: center;
             padding: 60px;
@@ -282,10 +435,10 @@
             to { transform: rotate(360deg); }
         }
 
-       
+        /* Error messages */
         .error {
             text-align: center;
-            padding: 60px 40px;
+            padding: 40px 20px;
             color: #ef4444;
             background: #1e293b;
             border-radius: 16px;
@@ -308,7 +461,7 @@
             background: #ea580c;
         }
 
-        
+        /* ===== BOTÓN COPIAR CORREGIDO ===== */
         .code-block-wrapper {
             position: relative;
             margin: 24px 0;
@@ -372,17 +525,6 @@
             border-color: #059669;
         }
 
-        @media (max-width: 768px) {
-            .copy-btn {
-                opacity: 1;
-                background: #1e293b;
-                top: 8px;
-                right: 8px;
-                padding: 5px 10px;
-                font-size: 11px;
-            }
-        }
-
         @media (hover: hover) {
             .copy-btn {
                 opacity: 0;
@@ -392,7 +534,7 @@
             }
         }
 
-      
+        /* Back to top button */
         .back-to-top {
             position: fixed;
             bottom: 24px;
@@ -423,7 +565,7 @@
             box-shadow: 0 6px 14px rgba(249,115,22,0.4);
         }
 
-       
+        /* Scrollbar personalizada */
         #sidebar::-webkit-scrollbar, 
         #content::-webkit-scrollbar {
             width: 6px;
@@ -459,7 +601,7 @@
             border: 1px dashed #f97316;
         }
 
-        
+        /* Estilos para el contenido markdown */
         .markdown-body {
             background-color: transparent !important;
             color: #e2e8f0 !important;
@@ -469,37 +611,16 @@
             color: #f97316 !important;
             border-bottom: 2px solid #334155 !important;
             padding-bottom: 12px !important;
-            font-size: 2.2em !important;
         }
 
         .markdown-body h2 {
             color: #f97316 !important;
-            margin-top: 32px !important;
-            margin-bottom: 20px !important;
-            font-size: 1.8em !important;
             border-bottom: 1px solid #334155 !important;
             padding-bottom: 8px !important;
         }
 
         .markdown-body h3 {
             color: #fbbf24 !important;
-            font-size: 1.4em !important;
-            margin-top: 24px !important;
-        }
-
-        .markdown-body p {
-            line-height: 1.7 !important;
-            font-size: 16px !important;
-            color: #cbd5e1 !important;
-        }
-
-        .markdown-body ul, .markdown-body ol {
-            padding-left: 24px !important;
-            color: #cbd5e1 !important;
-        }
-
-        .markdown-body li {
-            margin: 6px 0 !important;
         }
 
         .markdown-body a {
@@ -517,13 +638,11 @@
             color: #fbbf24 !important;
             padding: 2px 6px !important;
             border-radius: 4px !important;
-            font-size: 0.9em !important;
         }
 
         .markdown-body blockquote {
             border-left-color: #f97316 !important;
             background: #1e293b !important;
-            padding: 12px 20px !important;
             color: #94a3b8 !important;
         }
 
@@ -548,21 +667,21 @@
 </head>
 <body>
 
-
+<!-- Botón hamburguesa -->
 <button id="menu-toggle" onclick="App.toggleMenu()">
     <span></span>
     <span></span>
     <span></span>
 </button>
 
-
+<!-- Overlay para cerrar menú -->
 <div id="sidebar-overlay" onclick="App.closeMenu()"></div>
 
 <div id="container">
     <div id="sidebar">
         <h3 onclick="App.load('README.md'); App.closeMenu();" style="cursor:pointer;">Linuxero</h3>
         
-       
+        <!-- Búsqueda con botón X -->
         <div class="search-container">
             <input type="text" id="search" placeholder="Buscar sección..." oninput="App.handleSearchInput(this)">
             <button class="clear-search" id="clear-search" onclick="App.clearSearch()" aria-label="Limpiar búsqueda">✕</button>
@@ -583,7 +702,6 @@ const App = {
     current: "",
     searchTimeout: null,
 
-   
     toggleMenu() {
         document.getElementById('sidebar').classList.toggle('active');
         document.getElementById('menu-toggle').classList.toggle('active');
@@ -602,35 +720,23 @@ const App = {
         document.getElementById('content').scrollTo({ top: 0, behavior: 'smooth' });
     },
 
-    
     initScrollListener() {
         const content = document.getElementById('content');
         const backBtn = document.getElementById('back-to-top');
         
         content.addEventListener('scroll', () => {
-            if (content.scrollTop > 300) {
-                backBtn.classList.add('visible');
-            } else {
-                backBtn.classList.remove('visible');
-            }
+            backBtn.classList.toggle('visible', content.scrollTop > 300);
         });
     },
 
-    
     handleSearchInput(input) {
         const clearBtn = document.getElementById('clear-search');
-        
-        if (input.value.length > 0) {
-            clearBtn.classList.add('visible');
-        } else {
-            clearBtn.classList.remove('visible');
-        }
+        clearBtn.classList.toggle('visible', input.value.length > 0);
         
         clearTimeout(this.searchTimeout);
         this.searchTimeout = setTimeout(() => this.filter(), 300);
     },
 
-    
     clearSearch() {
         const searchInput = document.getElementById('search');
         searchInput.value = '';
@@ -642,7 +748,6 @@ const App = {
     async load(file) {
         this.current = file;
         history.pushState({}, "", "#" + file);
-
         this.closeMenu();
 
         if (this.cache[file]) {
@@ -653,25 +758,13 @@ const App = {
         document.getElementById("md").innerHTML = '<div class="loading">Cargando documento...</div>';
 
         try {
-            let filePath = file;
-            if (!filePath.endsWith('.md')) {
-                filePath += '.md';
-            }
-
+            let filePath = file.endsWith('.md') ? file : file + '.md';
             const res = await fetch(filePath);
             
-            if (!res.ok) {
-                if (res.status === 404) {
-                    throw new Error(`Archivo "${filePath}" no encontrado`);
-                }
-                throw new Error(`Error ${res.status}: ${res.statusText}`);
-            }
-
-            const text = await res.text();
+            if (!res.ok) throw new Error(`Archivo "${filePath}" no encontrado`);
             
-            const cleanMd = DOMPurify.sanitize(text, { 
-                USE_PROFILES: { markdown: true } 
-            });
+            const text = await res.text();
+            const cleanMd = DOMPurify.sanitize(text, { USE_PROFILES: { markdown: true } });
             
             this.cache[file] = cleanMd;
             this.render(cleanMd);
@@ -681,7 +774,6 @@ const App = {
                 <div class="error">
                     <h2>❌ Error al cargar</h2>
                     <p>${error.message}</p>
-                    <p style="font-size: 14px; margin-top: 8px;">Verifica que el archivo existe en la carpeta.</p>
                     <button onclick="App.load('README.md')">📄 Volver al inicio</button>
                 </div>
             `;
@@ -690,17 +782,11 @@ const App = {
 
     render(md) {
         try {
-            const html = marked.parse(md, {
-                breaks: true,
-                gfm: true
-            });
-            
-            const cleanHtml = DOMPurify.sanitize(html, {
-                USE_PROFILES: { html: true }
-            });
+            const html = marked.parse(md, { breaks: true, gfm: true });
+            const cleanHtml = DOMPurify.sanitize(html, { USE_PROFILES: { html: true } });
             
             document.getElementById("md").innerHTML = cleanHtml;
-
+            
             this.generateMenu();
             this.handleLinks();
             this.addCopyButtons();
@@ -709,13 +795,7 @@ const App = {
             this.clearSearch();
 
         } catch (error) {
-            console.error('Error al renderizar:', error);
-            document.getElementById("md").innerHTML = `
-                <div class="error">
-                    <h2>Error al procesar el documento</h2>
-                    <p>${error.message}</p>
-                </div>
-            `;
+            document.getElementById("md").innerHTML = `<div class="error">Error al procesar: ${error.message}</div>`;
         }
     },
 
@@ -726,14 +806,13 @@ const App = {
         const headers = document.querySelectorAll("#md h2");
         
         if (headers.length === 0) {
-            menu.innerHTML = '<div style="color: #94a3b8; padding: 12px; font-style: italic;">Sin secciones</div>';
+            menu.innerHTML = '<div style="color: #94a3b8; padding: 12px;">Sin secciones</div>';
             return;
         }
 
         headers.forEach((h2, i) => {
-            const sectionId = `seccion-${i}-${h2.innerText.toLowerCase().replace(/\s+/g, '-')}`;
-            h2.id = sectionId;
-
+            h2.id = `sec-${i}`;
+            
             const item = document.createElement("div");
             item.className = "nav-item";
             item.innerText = h2.innerText;
@@ -745,12 +824,10 @@ const App = {
                     behavior: "smooth"
                 });
                 
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 item.classList.add('active');
                 
-                if (window.innerWidth < 1024) {
-                    this.closeMenu();
-                }
+                if (window.innerWidth < 1024) this.closeMenu();
             };
 
             menu.appendChild(item);
@@ -774,17 +851,13 @@ const App = {
                 link.onclick = (e) => {
                     e.preventDefault();
                     const element = document.getElementById(href.substring(1));
-                    if (element) {
-                        element.scrollIntoView({ behavior: 'smooth' });
-                    }
+                    if (element) element.scrollIntoView({ behavior: 'smooth' });
                 };
             }
         });
     },
 
-    
     addCopyButtons() {
-        
         document.querySelectorAll("#md pre").forEach(pre => {
             if (pre.parentElement.classList.contains('code-block-wrapper')) return;
             
@@ -793,7 +866,6 @@ const App = {
             pre.parentNode.insertBefore(wrapper, pre);
             wrapper.appendChild(pre);
             
-           
             if (wrapper.querySelector(".copy-btn")) return;
 
             const btn = document.createElement("button");
@@ -859,20 +931,11 @@ const App = {
     }
 };
 
-
-window.onload = async () => {
+window.onload = () => {
     const page = location.hash.replace("#", "") || "README.md";
-    
-    try {
-        await App.load(page);
-    } catch (error) {
-        // Solo mostramos error, sin crear archivos de ejemplo
-        console.error('Error al cargar la página:', error);
-    }
-    
+    App.load(page);
     App.initScrollListener();
     
-    // Atajo de teclado Ctrl+K para buscar
     document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
             e.preventDefault();
