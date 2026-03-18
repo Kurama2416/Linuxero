@@ -61,9 +61,9 @@
             background: #f97316;
             border: none;
             color: white;
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -71,6 +71,7 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(249,115,22,0.3);
             transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
         }
 
         #menu-toggle:hover {
@@ -78,9 +79,13 @@
             transform: scale(1.05);
         }
 
+        #menu-toggle:active {
+            transform: scale(0.95);
+        }
+
         #menu-toggle span {
             display: block;
-            width: 22px;
+            width: 24px;
             height: 2px;
             background: white;
             margin: 3px 0;
@@ -151,19 +156,16 @@
 
         /* ===== MEJORAS PARA MÓVIL ===== */
         @media (max-width: 768px) {
-            /* Contenido principal con menos padding */
             #content {
                 padding: 16px 12px !important;
             }
             
-            /* Contenedor del README más compacto */
             #md {
                 padding: 20px 16px !important;
                 max-width: 100%;
-                border-radius: 12px;
+                border-radius: 16px;
             }
             
-            /* Títulos más pequeños en móvil */
             .markdown-body h1 {
                 font-size: 1.8em !important;
                 margin-top: 0 !important;
@@ -181,14 +183,12 @@
                 margin-top: 20px !important;
             }
             
-            /* Texto más legible */
             .markdown-body p, 
             .markdown-body li {
                 font-size: 15px !important;
                 line-height: 1.6 !important;
             }
             
-            /* Tablas con scroll horizontal en móvil */
             .markdown-body table {
                 display: block;
                 overflow-x: auto;
@@ -196,7 +196,6 @@
                 font-size: 14px;
             }
             
-            /* Bloques de código más compactos */
             pre {
                 padding: 12px !important;
                 font-size: 13px !important;
@@ -206,7 +205,6 @@
                 font-size: 13px !important;
             }
             
-            /* Botón de copiar más pequeño pero visible */
             .copy-btn {
                 padding: 6px 10px !important;
                 font-size: 11px !important;
@@ -215,71 +213,72 @@
                 right: 6px !important;
             }
             
-            /* Sidebar más compacto en móvil */
             #sidebar {
                 width: 260px;
-                padding: 16px 12px;
+                padding: 20px 12px;
             }
             
             #sidebar h3 {
                 font-size: 20px;
-                margin-bottom: 12px;
+                margin-bottom: 16px;
+                padding-left: 4px;
             }
             
             .nav-item {
-                padding: 8px 10px;
-                font-size: 13px;
+                padding: 10px 12px;
+                font-size: 14px;
+                margin: 6px 0;
             }
             
-            /* Barra de búsqueda más pequeña */
             .search-container {
-                margin: 12px 0 16px 0;
+                margin: 16px 0 20px 0;
             }
             
             #search {
-                padding: 8px 32px 8px 12px;
-                font-size: 13px;
+                padding: 12px 40px 12px 16px;
+                font-size: 15px;
+                border-radius: 10px;
             }
             
-            /* Mejorar espaciado en listas */
+            .clear-search {
+                font-size: 20px;
+                right: 12px;
+            }
+            
             .markdown-body ul, 
             .markdown-body ol {
-                padding-left: 20px !important;
+                padding-left: 24px !important;
             }
             
             .markdown-body li {
-                margin: 8px 0 !important;
+                margin: 10px 0 !important;
             }
             
-            /* Citas más compactas */
             .markdown-body blockquote {
-                padding: 10px 16px !important;
-                margin: 16px 0 !important;
+                padding: 12px 18px !important;
+                margin: 20px 0 !important;
             }
             
-            /* Código inline más legible */
             .markdown-body code:not(pre code) {
-                font-size: 13px !important;
-                padding: 2px 5px !important;
+                font-size: 14px !important;
+                padding: 3px 6px !important;
             }
             
-            /* Imágenes responsive */
             .markdown-body img {
                 max-width: 100%;
                 height: auto;
+                border-radius: 8px;
             }
             
-            /* Botón back to top más pequeño */
             .back-to-top {
-                width: 40px;
-                height: 40px;
-                bottom: 16px;
-                right: 16px;
-                font-size: 18px;
+                width: 44px;
+                height: 44px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 20px;
             }
         }
 
-        /* Ajustes para tablets */
         @media (min-width: 769px) and (max-width: 1023px) {
             #content {
                 padding: 32px 24px !important;
@@ -298,18 +297,16 @@
             }
         }
 
-        /* Contenedor del contenido */
         #md {
             max-width: 1100px;
             margin: 0 auto;
             background: #1e293b;
             padding: 48px 56px;
-            border-radius: 16px;
+            border-radius: 24px;
             box-shadow: 0 12px 24px rgba(0,0,0,0.3);
             border: 1px solid #334155;
         }
 
-        /* BÚSQUEDA */
         .search-container {
             position: relative;
             margin: 20px 0 24px 0;
@@ -326,6 +323,7 @@
             font-size: 14px;
             outline: none;
             transition: all 0.2s;
+            -webkit-appearance: none;
         }
 
         #search:focus {
@@ -348,10 +346,11 @@
             color: #94a3b8;
             font-size: 18px;
             cursor: pointer;
-            padding: 0 4px;
+            padding: 8px;
             display: none;
             transition: color 0.2s;
             line-height: 1;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .clear-search:hover {
@@ -362,18 +361,28 @@
             display: block;
         }
 
-        /* Título en sidebar */
         #sidebar h3 {
             color: #f97316;
             font-size: 22px;
             margin-bottom: 8px;
             cursor: pointer;
-            padding: 0 4px;
+            padding: 8px 4px;
             font-weight: 600;
             letter-spacing: -0.5px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #sidebar h3:hover {
+            background: rgba(249,115,22,0.1);
+        }
+
+        #sidebar h3:active {
+            background: rgba(249,115,22,0.2);
         }
 
         #sidebar h3::before {
@@ -381,26 +390,31 @@
             font-size: 20px;
         }
 
-        /* Menú de navegación */
         .nav-item {
             display: block;
             padding: 8px 12px;
             margin: 4px 0;
             color: #94a3b8;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 13px;
             transition: all 0.2s;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             border-left: 2px solid transparent;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .nav-item:hover {
             background: rgba(249,115,22,0.15);
             color: white;
             border-left-color: #f97316;
+        }
+
+        .nav-item:active {
+            background: rgba(249,115,22,0.25);
+            transform: scale(0.98);
         }
 
         .nav-item.active {
@@ -410,7 +424,6 @@
             border-left-color: #f97316;
         }
 
-        /* Loading spinner */
         .loading {
             text-align: center;
             padding: 60px;
@@ -435,7 +448,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Error messages */
         .error {
             text-align: center;
             padding: 40px 20px;
@@ -449,19 +461,24 @@
             background: #f97316;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
             cursor: pointer;
             margin-top: 20px;
             font-weight: 500;
             transition: background 0.2s;
+            font-size: 16px;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .error button:hover {
             background: #ea580c;
         }
 
-        /* ===== BOTÓN COPIAR CORREGIDO ===== */
+        .error button:active {
+            transform: scale(0.98);
+        }
+
         .code-block-wrapper {
             position: relative;
             margin: 24px 0;
@@ -493,20 +510,21 @@
             color: #94a3b8;
             border: 1px solid #334155;
             border-radius: 6px;
-            padding: 6px 12px;
+            padding: 8px 14px;
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             z-index: 100;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             transition: all 0.2s ease;
             border: 1px solid rgba(249, 115, 22, 0.3);
-            min-width: 85px;
+            min-width: 90px;
             justify-content: center;
             pointer-events: auto;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .copy-btn i {
@@ -517,6 +535,10 @@
             background: #2d3a4f;
             color: white;
             border-color: #f97316;
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
         }
 
         .copy-btn.copied {
@@ -534,15 +556,14 @@
             }
         }
 
-        /* Back to top button */
         .back-to-top {
             position: fixed;
             bottom: 24px;
             right: 24px;
             background: #f97316;
             color: white;
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -551,9 +572,10 @@
             opacity: 0;
             transition: opacity 0.3s, transform 0.2s;
             border: none;
-            box-shadow: 0 4px 10px rgba(249,115,22,0.3);
-            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(249,115,22,0.4);
+            font-size: 22px;
             z-index: 900;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .back-to-top.visible {
@@ -562,10 +584,13 @@
 
         .back-to-top:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 14px rgba(249,115,22,0.4);
+            box-shadow: 0 6px 16px rgba(249,115,22,0.5);
         }
 
-        /* Scrollbar personalizada */
+        .back-to-top:active {
+            transform: scale(0.95);
+        }
+
         #sidebar::-webkit-scrollbar, 
         #content::-webkit-scrollbar {
             width: 6px;
@@ -589,19 +614,17 @@
             border-radius: 3px;
         }
 
-        /* Resultados de búsqueda */
         #no-results {
-            padding: 20px 12px;
+            padding: 24px 16px;
             color: #94a3b8;
             text-align: center;
-            font-size: 14px;
+            font-size: 15px;
             background: #1e293b;
-            border-radius: 8px;
-            margin-top: 16px;
+            border-radius: 10px;
+            margin-top: 20px;
             border: 1px dashed #f97316;
         }
 
-        /* Estilos para el contenido markdown */
         .markdown-body {
             background-color: transparent !important;
             color: #e2e8f0 !important;
@@ -627,6 +650,7 @@
             color: #f97316 !important;
             text-decoration: none !important;
             border-bottom: 1px dashed #f97316 !important;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .markdown-body a:hover {
@@ -667,32 +691,29 @@
 </head>
 <body>
 
-<!-- Botón hamburguesa -->
 <button id="menu-toggle" onclick="App.toggleMenu()">
     <span></span>
     <span></span>
     <span></span>
 </button>
 
-<!-- Overlay para cerrar menú -->
 <div id="sidebar-overlay" onclick="App.closeMenu()"></div>
 
 <div id="container">
     <div id="sidebar">
-        <h3 onclick="App.load('README.md'); App.closeMenu();" style="cursor:pointer;">Linuxero</h3>
+        <h3 onclick="App.load('README.md'); App.closeMenu();">Linuxero</h3>
         
-        <!-- Búsqueda con botón X -->
         <div class="search-container">
-            <input type="text" id="search" placeholder="Buscar sección..." oninput="App.handleSearchInput(this)">
-            <button class="clear-search" id="clear-search" onclick="App.clearSearch()" aria-label="Limpiar búsqueda">✕</button>
+            <input type="text" id="search" placeholder="Buscar sección..." oninput="App.handleSearchInput(this)" onclick="event.stopPropagation()">
+            <button class="clear-search" id="clear-search" onclick="App.clearSearch(); event.stopPropagation()" aria-label="Limpiar búsqueda">✕</button>
         </div>
         
         <div id="menu"></div>
     </div>
 
-    <div id="content">
+    <div id="content" onclick="App.closeMenu()">
         <div id="md" class="markdown-body"></div>
-        <button class="back-to-top" onclick="App.scrollToTop()" id="back-to-top">↑</button>
+        <button class="back-to-top" onclick="App.scrollToTop(); event.stopPropagation()" id="back-to-top">↑</button>
     </div>
 </div>
 
@@ -706,6 +727,12 @@ const App = {
         document.getElementById('sidebar').classList.toggle('active');
         document.getElementById('menu-toggle').classList.toggle('active');
         document.getElementById('sidebar-overlay').classList.toggle('active');
+        
+        if (document.getElementById('sidebar').classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
     },
 
     closeMenu() {
@@ -713,6 +740,7 @@ const App = {
             document.getElementById('sidebar').classList.remove('active');
             document.getElementById('menu-toggle').classList.remove('active');
             document.getElementById('sidebar-overlay').classList.remove('active');
+            document.body.style.overflow = '';
         }
     },
 
@@ -774,7 +802,7 @@ const App = {
                 <div class="error">
                     <h2>❌ Error al cargar</h2>
                     <p>${error.message}</p>
-                    <button onclick="App.load('README.md')">📄 Volver al inicio</button>
+                    <button onclick="App.load('README.md'); event.stopPropagation()">📄 Volver al inicio</button>
                 </div>
             `;
         }
@@ -818,7 +846,8 @@ const App = {
             item.innerText = h2.innerText;
             item.title = h2.innerText;
 
-            item.onclick = () => {
+            item.onclick = (e) => {
+                e.stopPropagation();
                 document.getElementById("content").scrollTo({
                     top: h2.offsetTop - 20,
                     behavior: "smooth"
@@ -841,6 +870,7 @@ const App = {
             if (href && href.endsWith(".md")) {
                 link.onclick = (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     
                     const basePath = this.current.substring(0, this.current.lastIndexOf('/') + 1);
                     const fullPath = href.startsWith('/') ? href.substring(1) : basePath + href;
@@ -850,6 +880,7 @@ const App = {
             } else if (href && href.startsWith('#')) {
                 link.onclick = (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     const element = document.getElementById(href.substring(1));
                     if (element) element.scrollIntoView({ behavior: 'smooth' });
                 };
@@ -857,6 +888,7 @@ const App = {
         });
     },
 
+    // ===== BOTÓN COPIAR MEJORADO - Omite comentarios =====
     addCopyButtons() {
         document.querySelectorAll("#md pre").forEach(pre => {
             if (pre.parentElement.classList.contains('code-block-wrapper')) return;
@@ -876,10 +908,35 @@ const App = {
                 e.stopPropagation();
                 
                 const codeElement = pre.querySelector('code') || pre;
-                const code = codeElement.innerText || codeElement.textContent;
+                let fullCode = codeElement.innerText || codeElement.textContent;
+                
+                // Limpiar comentarios y líneas vacías
+                const cleanCode = fullCode.split('\n')
+                    .map(line => {
+                        // Eliminar todo después de # (comentarios)
+                        const hashIndex = line.indexOf('#');
+                        if (hashIndex !== -1) {
+                            // Verificar si el # no está dentro de comillas
+                            const beforeHash = line.substring(0, hashIndex);
+                            const singleQuotes = (beforeHash.match(/'/g) || []).length;
+                            const doubleQuotes = (beforeHash.match(/"/g) || []).length;
+                            
+                            // Si el número de comillas es par, es un comentario
+                            if (singleQuotes % 2 === 0 && doubleQuotes % 2 === 0) {
+                                return beforeHash.trim();
+                            }
+                        }
+                        return line;
+                    })
+                    .map(line => line.trim())
+                    .filter(line => line !== '')
+                    .join('\n');
+                
+                // Usar el código limpio, o el original si no hay cambios
+                const codeToCopy = cleanCode || fullCode;
                 
                 try {
-                    await navigator.clipboard.writeText(code);
+                    await navigator.clipboard.writeText(codeToCopy);
                     
                     btn.classList.add('copied');
                     btn.innerHTML = '<i class="fas fa-check"></i> ¡Copiado!';
@@ -890,6 +947,7 @@ const App = {
                     }, 2000);
                     
                 } catch (err) {
+                    console.error('Error al copiar:', err);
                     btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
                     btn.style.background = "#dc2626";
                     
@@ -936,10 +994,21 @@ window.onload = () => {
     App.load(page);
     App.initScrollListener();
     
+    // Atajo de teclado SOLO para desktop
     document.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        if (window.innerWidth >= 1024 && (e.ctrlKey || e.metaKey) && e.key === 'k') {
             e.preventDefault();
             document.getElementById('search').focus();
+        }
+    });
+    
+    const searchInput = document.getElementById('search');
+    searchInput.addEventListener('touchstart', (e) => e.stopPropagation());
+    
+    const content = document.getElementById('content');
+    content.addEventListener('touchstart', () => {
+        if (window.innerWidth < 1024) {
+            App.closeMenu();
         }
     });
 };
@@ -954,6 +1023,7 @@ window.onresize = () => {
         document.getElementById('sidebar').classList.remove('active');
         document.getElementById('menu-toggle').classList.remove('active');
         document.getElementById('sidebar-overlay').classList.remove('active');
+        document.body.style.overflow = '';
     }
 };
 </script>
