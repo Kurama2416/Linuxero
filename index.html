@@ -258,7 +258,8 @@
       font-size: 14px
     }
 
-    .nav-item.h1 {
+    .nav-item.h1,
+    .nav-item.h3 {
       color: var(--accent);
       font-weight: 700;
       font-size: 15px;
@@ -277,7 +278,9 @@
     }
 
     .nav-item.h1:hover,
-    .nav-item.h1[aria-current=true] {
+    .nav-item.h1[aria-current=true],
+    .nav-item.h3:hover,
+    .nav-item.h3[aria-current=true] {
       color: var(--accent)
     }
 
@@ -701,7 +704,8 @@
 
       buildMenu() {
         const menu = $('menu'); menu.replaceChildren();
-        $('md').querySelectorAll('h1,h2').forEach(h => {
+        // h1 y h3 = categorías, h2 = comandos. Si tus categorías usan otro nivel, cambia este selector.
+        $('md').querySelectorAll('h1,h2,h3').forEach(h => {
           const t = h.textContent.trim(); if (!t) return;
           const b = document.createElement('button');
           b.type = 'button'; b.className = 'nav-item ' + h.tagName.toLowerCase(); b.textContent = t;
