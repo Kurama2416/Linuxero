@@ -107,14 +107,14 @@ Instalar programas cambia según la distribución:
 
 ## Qué viene
 
-- [ ] Guía para elegir distribución e instalar Linux paso a paso (USB booteable, probar sin instalar, instalar junto a Windows)
-- [ ] Primeros pasos después de instalar: actualizaciones, drivers, códecs, Flatpak y copias de seguridad
-- [ ] Tabla de equivalencias: «si usabas X en Windows, usa Y en Linux»
-- [ ] Glosario para principiantes
-- [ ] Comandos separados por tema
-- [ ] Errores para Fedora y Arch
-- [ ] Hoja de trucos en PDF
-- [ ] Buscador en toda la wiki
+ [ ] Guía para elegir distribución e instalar Linux paso a paso (USB booteable, probar sin instalar, instalar junto a Windows)
+ [ ] Primeros pasos después de instalar: actualizaciones, drivers, códecs, Flatpak y copias de seguridad
+ [ ] Tabla de equivalencias: «si usabas X en Windows, usa Y en Linux»
+ [ ] Glosario para principiantes
+ [ ] Comandos separados por tema
+ [ ] Errores para Fedora y Arch
+ [ ] Hoja de trucos en PDF
+ [ ] Buscador en toda la wiki
 
 ## Cómo usarlo sin conexión
 
