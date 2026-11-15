@@ -422,13 +422,47 @@
       border-radius: 6px;
       padding: 4px 10px;
       font-size: 12px;
-      min-height: 32px
+      min-height: 32px;
+      transition: background .15s, border-color .15s, transform .15s
     }
 
-    .copy.ok {
+    .copy:hover {
+      border-color: var(--accent)
+    }
+
+    .copy:active {
+      transform: translateY(1px)
+    }
+
+    .copy:first-child {
+      border-color: var(--accent)
+    }
+
+    .copy:first-child:hover {
+      background: var(--accent-bg);
+      border-color: var(--accent-bg);
+      color: #fff;
+      transform: translateY(-1px)
+    }
+
+    .copy.ok,
+    .copy.ok:hover {
       background: var(--ok);
       border-color: var(--ok);
-      color: #fff
+      color: #fff;
+      transform: none
+    }
+
+    @media(hover:hover) {
+      .code-actions {
+        opacity: .65;
+        transition: opacity .15s
+      }
+
+      .code:hover .code-actions,
+      .code:focus-within .code-actions {
+        opacity: 1
+      }
     }
 
     #md table {
